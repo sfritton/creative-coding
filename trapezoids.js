@@ -11,7 +11,7 @@ console.log("Random seed: %s", random.getSeed());
 
 const settings = {
   suffix: random.getSeed(),
-  dimensions: [2048, 2048],
+  dimensions: [2048, 1024],
   // orientation: 'landscape',
   // units: 'cm',
   // pixelsPerInch: 300
@@ -24,16 +24,16 @@ const sketch = () => {
   const createGrid = (count) => {
     const points = [];
 
-    for (let x = 0; x < count; x++) {
+    for (let x = 0; x < count * 2; x++) {
       for (let y = 0; y < count; y++) {
-        const u = count <= 1 ? 0.5 : x / (count - 1);
+        const u = count <= 2 ? 0.5 : x / (count * 2 - 1);
         const v = count <= 1 ? 0.5 : y / (count - 1);
         // const radius = random.noise2D(u, v) * 0.5 + 0.5;
 
         points.push({
           // color: random.pick(palette),
           // radius,
-          order: random.noise2D(u, v) + u + v * 100,
+          order: random.noise2D(u, v), // + u + v * 100,
           position: { u, v },
         });
       }
@@ -42,8 +42,8 @@ const sketch = () => {
     return points;
   };
 
-  const points = createGrid(40);
-  const margin = 400;
+  const points = createGrid(5);
+  const margin = 200;
 
   return ({ context, width, height }) => {
     const getXY = ({ u, v }) => [
